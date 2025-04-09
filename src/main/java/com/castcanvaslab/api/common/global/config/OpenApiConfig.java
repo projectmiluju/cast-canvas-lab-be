@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
-	@Bean
-	public OpenAPI openAPI() {
-		return new OpenAPI().info(
-			new Info()
-				.title("CastCanvas Lab API")
-				.description("Backend API for CastCanvas Lab")
-				.version("v0")
-		);
-	}
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .info(
+                        new Info()
+                                .title("CastCanvas Lab API")
+                                .description("Backend API for CastCanvas Lab")
+                                .version("v0"));
+    }
 }

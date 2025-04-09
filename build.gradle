@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.0'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.diffplug.spotless' version '6.25.0'
+	id 'checkstyle'
 }
 
 group = 'com.castcanvaslab'
@@ -48,4 +50,30 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Spotless Configuration
+spotless {
+	java {
+		target 'src/*/java/**/*.java'
+		googleJavaFormat().aosp() // AOSP style (indent 4 spaces)
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+}
+
+// Checkstyle Configuration
+checkstyle {
+	toolVersion = '10.12.5'
+	configFile = file("config/checkstyle/checkstyle.xml")
+	ignoreFailures = false
+	maxWarnings = 0
+}
+
+tasks.withType(Checkstyle) {
+	reports {
+		xml.required = true
+		html.required = true
+	}
 }

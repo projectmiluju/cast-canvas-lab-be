@@ -12,27 +12,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
-		Map<String, String> details = exception.getBindingResult()
-			.getFieldErrors()
-			.stream()
-			.collect(Collectors.toMap(
-				FieldError::getField,
-				fieldError -> fieldError.getDefaultMessage() == null ? "Invalid value" : fieldError.getDefaultMessage(),
-				(left, right) -> right,
-				LinkedHashMap::new
-			));
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception) {
+        Map<String, String> details =
+                exception.getBindingResult().getFieldErrors().stream()
+                        .collect(
+                                Collectors.toMap(
+                                        FieldError::getField,
+                                        fieldError ->
+                                                fieldError.getDefaultMessage() == null
+                                                        ? "Invalid value"
+                                                        : fieldError.getDefaultMessage(),
+                                        (left, right) -> right,
+                                        LinkedHashMap::new));
 
-		return ResponseEntity
-			.status(ErrorCode.INVALID_INPUT.status())
-			.body(ErrorResponse.of(ErrorCode.INVALID_INPUT, details));
-	}
+        return ResponseEntity.status(ErrorCode.INVALID_INPUT.status())
+                .body(ErrorResponse.of(ErrorCode.INVALID_INPUT, details));
+    }
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorResponse> handleException(Exception exception) {
-		return ResponseEntity
-			.status(ErrorCode.INTERNAL_SERVER_ERROR.status())
-			.body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, Map.of()));
-	}
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+        return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.status())
+                .body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, Map.of()));
+    }
 }

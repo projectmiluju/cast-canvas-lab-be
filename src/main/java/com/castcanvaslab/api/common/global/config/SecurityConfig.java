@@ -11,25 +11,27 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.csrf(AbstractHttpConfigurer::disable)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(
-					"/actuator/health",
-					"/actuator/info",
-					"/docs/**",
-					"/swagger-ui/**",
-					"/api/v1/system/ping"
-				).permitAll()
-				.anyRequest().authenticated()
-			)
-			.headers(Customizer.withDefaults());
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+                                        .requestMatchers(
+                                                "/actuator/health",
+                                                "/actuator/info",
+                                                "/docs/**",
+                                                "/swagger-ui/**",
+                                                "/api/v1/system/ping")
+                                        .permitAll()
+                                        .anyRequest()
+                                        .authenticated())
+                .headers(Customizer.withDefaults());
 
-		return http.build();
-	}
+        return http.build();
+    }
 }

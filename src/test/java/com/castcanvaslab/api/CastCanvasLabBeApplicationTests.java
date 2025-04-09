@@ -16,19 +16,16 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 class CastCanvasLabBeApplicationTests {
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired private MockMvc mockMvc;
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {}
 
-	@Test
-	void pingEndpointReturnsSuccessResponse() throws Exception {
-		mockMvc.perform(get("/api/v1/system/ping"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("SUCCESS"))
-			.andExpect(jsonPath("$.data.status").value("UP"));
-	}
-
+    @Test
+    void pingEndpointReturnsSuccessResponse() throws Exception {
+        mockMvc.perform(get("/api/v1/system/ping"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("SUCCESS"))
+                .andExpect(jsonPath("$.data.status").value("UP"));
+    }
 }

@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/system")
 public class SystemController {
 
-	private final SystemService systemService;
+    private final SystemService systemService;
 
-	public SystemController(SystemService systemService) {
-		this.systemService = systemService;
-	}
+    public SystemController(SystemService systemService) {
+        this.systemService = systemService;
+    }
 
-	@GetMapping("/ping")
-	public ApiResponse<SystemStatus> ping() {
-		return ApiResponse.success("System is reachable", systemService.getStatus());
-	}
+    @GetMapping("/ping")
+    public ApiResponse<SystemStatus> ping() {
+        return ApiResponse.success("System is reachable", systemService.getStatus());
+    }
 }
