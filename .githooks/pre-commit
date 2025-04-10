@@ -1,0 +1,15 @@
+#!/bin/sh
+echo "--- Running Spotless Apply (Auto Formatting) ---"
+
+# Run spotlessApply
+./gradlew spotlessApply
+
+if [ $? -ne 0 ]; then
+    echo "Spotless failed. Please check your code."
+    exit 1
+fi
+
+# Add changes to git index
+git add .
+
+echo "--- Spotless Apply Finished ---"

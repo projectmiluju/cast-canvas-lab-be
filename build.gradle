@@ -77,3 +77,20 @@ tasks.withType(Checkstyle) {
 		html.required = true
 	}
 }
+
+// Git Hook Tasks
+tasks.register('copyGitHooks', Copy) {
+	description = 'Copies the git hooks from /githooks to .git/hooks'
+	from file(".githooks/pre-commit")
+	into file(".git/hooks")
+}
+
+tasks.register('makeGitHooksExecutable', Exec) {
+	dependsOn 'copyGitHooks'
+	description = 'Makes the git hooks executable'
+	commandLine 'chmod', '+x', '.git/hooks/pre-commit'
+}
+
+tasks.named('classes') {
+	dependsOn 'makeGitHooksExecutable'
+}
