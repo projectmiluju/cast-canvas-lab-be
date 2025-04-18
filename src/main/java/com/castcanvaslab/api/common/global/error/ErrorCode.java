@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR(
             HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "Unexpected server error"),
-    INVALID_INPUT(HttpStatus.BAD_REQUEST, "COMMON_400", "Invalid request input");
+    INVALID_INPUT(HttpStatus.BAD_REQUEST, "COMMON_400", "Invalid request input"),
+
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "User not found");
 
     private final HttpStatus status;
     private final String code;

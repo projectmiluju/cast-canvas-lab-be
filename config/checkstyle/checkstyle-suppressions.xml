@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionList Configuration 1.0//EN"
+    "https://checkstyle.org/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+    <!-- Spring Boot main class is not a utility class -->
+    <suppress checks="HideUtilityClassConstructor" files="CastCanvasLabBeApplication.java"/>
+</suppressions>

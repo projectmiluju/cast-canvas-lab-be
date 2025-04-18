@@ -13,6 +13,12 @@
         <property name="fileNamePattern" value="module\-info\.java$"/>
     </module>
 
+    <!-- Suppressions -->
+    <module name="SuppressionFilter">
+        <property name="file" value="${config_loc}/checkstyle-suppressions.xml"/>
+        <property name="optional" value="false"/>
+    </module>
+
     <!-- Miscellaneous -->
     <module name="NewlineAtEndOfFile"/>
     <module name="Translation"/>
@@ -53,7 +59,12 @@
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
         <module name="WhitespaceAfter"/>
-        <module name="WhitespaceAround"/>
+        <module name="WhitespaceAround">
+            <property name="allowEmptyTypes" value="true"/>
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyLambdas" value="true"/>
+            <property name="allowEmptyConstructors" value="true"/>
+        </module>
 
         <!-- Modifier Checks -->
         <module name="ModifierOrder"/>

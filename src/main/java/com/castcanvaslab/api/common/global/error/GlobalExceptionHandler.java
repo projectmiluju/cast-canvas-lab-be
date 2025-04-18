@@ -31,6 +31,12 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(ErrorCode.INVALID_INPUT, details));
     }
 
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<ErrorResponse> handleDomainException(DomainException exception) {
+        return ResponseEntity.status(exception.errorCode().status())
+                .body(ErrorResponse.of(exception.errorCode(), Map.of()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception exception) {
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.status())
