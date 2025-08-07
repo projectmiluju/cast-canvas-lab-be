@@ -85,10 +85,15 @@ tasks.register('copyGitHooks', Copy) {
 	into file(".git/hooks")
 }
 
-tasks.register('makeGitHooksExecutable', Exec) {
+tasks.register('makeGitHooksExecutable') {
 	dependsOn 'copyGitHooks'
 	description = 'Makes the git hooks executable'
-	commandLine 'chmod', '+x', '.git/hooks/pre-commit'
+	doLast {
+		def hookFile = file('.git/hooks/pre-commit')
+		if (hookFile.exists() && !hookFile.setExecutable(true, false)) {
+			throw new GradleException("Failed to mark ${hookFile} as executable")
+		}
+	}
 }
 
 tasks.named('classes') {
