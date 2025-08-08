@@ -41,11 +41,39 @@ CastCanvas Lab은 다음 레포지토리로 구성됩니다.
 
 ## 로컬 개발 환경 설정
 
-**요구 사항:** JDK 17+, Docker (PostgreSQL/Redis 로컬 실행 시)
+**요구 사항:** JDK 17, Docker
+
+**1. 인프라 실행 (PostgreSQL + Redis)**
+
+```bash
+docker compose up -d
+```
+
+**2. 시크릿 설정**
+
+```bash
+cp src/main/resources/application-local-secret.example.yml \
+   src/main/resources/application-local-secret.yml
+```
+
+`application-local-secret.yml`을 열어 JWT secret 값을 채웁니다.
+
+**3. 서버 실행**
 
 ```bash
 ./gradlew bootRun
 ```
+
+기본 접속 정보 (변경 불필요):
+
+| 항목 | 값 |
+| ---- | -- |
+| DB host | `localhost:5432` |
+| DB name | `cast_canvas_lab` |
+| DB user/password | `castcanvas` / `castcanvas` |
+| Redis | `localhost:6379` |
+| API | `http://localhost:8080` |
+| Swagger UI | `http://localhost:8080/docs/swagger-ui` |
 
 ---
 
