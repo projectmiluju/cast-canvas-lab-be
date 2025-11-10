@@ -60,11 +60,8 @@ Thumbs.db
 ### Local Agent / Tooling ###
 .claude/
 .codex/
-
 .gemini/
 
-AGENTS.md
-GEMINI.md
 CLAUDE.md
 docs/*
-CURRENT_STATUS.md
+STATUS.md
