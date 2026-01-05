@@ -7,7 +7,11 @@ public enum ErrorCode {
             HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "Unexpected server error"),
     INVALID_INPUT(HttpStatus.BAD_REQUEST, "COMMON_400", "Invalid request input"),
 
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "User not found");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "User not found"),
+
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_409", "Email already exists"),
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH_401", "Invalid email or password"),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_401_TOKEN", "Invalid or expired token");
 
     private final HttpStatus status;
     private final String code;

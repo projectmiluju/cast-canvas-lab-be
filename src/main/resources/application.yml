@@ -53,3 +53,4 @@ app:
       issuer: castcanvaslab
       secret: ${JWT_SECRET:change-me-in-local}
       access-token-expiration-seconds: 3600
+      refresh-token-expiration-seconds: 604800

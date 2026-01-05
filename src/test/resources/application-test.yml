@@ -10,8 +10,18 @@ spring:
         enabled: false
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+app:
+  security:
+    jwt:
+      issuer: castcanvaslab-test
+      secret: test-secret-key-that-is-at-least-32-bytes-long-for-hmac-sha256
+      access-token-expiration-seconds: 3600
+      refresh-token-expiration-seconds: 604800
