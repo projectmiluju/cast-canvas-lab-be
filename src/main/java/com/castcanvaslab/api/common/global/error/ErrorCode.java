@@ -11,7 +11,11 @@ public enum ErrorCode {
 
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_409", "Email already exists"),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH_401", "Invalid email or password"),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_401_TOKEN", "Invalid or expired token");
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_401_TOKEN", "Invalid or expired token"),
+
+    WORKSPACE_NOT_FOUND(HttpStatus.NOT_FOUND, "WORKSPACE_404", "Workspace not found"),
+    WORKSPACE_FORBIDDEN(
+            HttpStatus.FORBIDDEN, "WORKSPACE_403", "No permission to access this workspace");
 
     private final HttpStatus status;
     private final String code;
