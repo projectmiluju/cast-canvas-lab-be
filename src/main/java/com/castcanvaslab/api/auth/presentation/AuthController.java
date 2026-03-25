@@ -2,6 +2,7 @@ package com.castcanvaslab.api.auth.presentation;
 
 import com.castcanvaslab.api.auth.application.AuthService;
 import com.castcanvaslab.api.auth.application.dto.LoginRequest;
+import com.castcanvaslab.api.auth.application.dto.RefreshRequest;
 import com.castcanvaslab.api.auth.application.dto.SignupRequest;
 import com.castcanvaslab.api.auth.application.dto.TokenResponse;
 import com.castcanvaslab.api.common.global.api.ApiResponse;
@@ -35,5 +36,12 @@ public class AuthController {
             @RequestBody @Valid LoginRequest request) {
         TokenResponse response = authService.login(request);
         return ResponseEntity.ok(ApiResponse.success("Login successful", response));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<TokenResponse>> refresh(
+            @RequestBody @Valid RefreshRequest request) {
+        TokenResponse response = authService.refresh(request);
+        return ResponseEntity.ok(ApiResponse.success("Token refreshed", response));
     }
 }

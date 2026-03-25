@@ -48,6 +48,7 @@ src/main/resources/application-local.yml
 ### Logs ###
 *.log
 logs/
+.output.txt
 
 ### JVM ###
 hs_err_pid*.log
