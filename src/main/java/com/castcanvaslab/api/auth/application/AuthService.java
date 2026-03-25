@@ -1,14 +1,17 @@
 package com.castcanvaslab.api.auth.application;
 
 import com.castcanvaslab.api.auth.application.dto.LoginRequest;
+import com.castcanvaslab.api.auth.application.dto.RefreshRequest;
 import com.castcanvaslab.api.auth.application.dto.SignupRequest;
 import com.castcanvaslab.api.auth.application.dto.TokenResponse;
+import com.castcanvaslab.api.auth.domain.RefreshTokenRepository;
 import com.castcanvaslab.api.auth.infrastructure.JwtTokenProvider;
 import com.castcanvaslab.api.common.global.error.DomainException;
 import com.castcanvaslab.api.common.global.error.ErrorCode;
 import com.castcanvaslab.api.user.application.dto.UserResponse;
 import com.castcanvaslab.api.user.domain.User;
 import com.castcanvaslab.api.user.domain.UserRepository;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public UserResponse signup(SignupRequest request) {
@@ -46,8 +50,39 @@ public class AuthService {
             throw new DomainException(ErrorCode.INVALID_CREDENTIALS);
         }
 
-        String accessToken = jwtTokenProvider.createAccessToken(user.getId());
-        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
+        return issueTokens(user.getId());
+    }
+
+    @Transactional
+    public TokenResponse refresh(RefreshRequest request) {
+        String token = request.refreshToken();
+
+        if (!jwtTokenProvider.validate(token) || !jwtTokenProvider.isRefreshToken(token)) {
+            throw new DomainException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        UUID userId = jwtTokenProvider.extractUserId(token);
+
+        String stored =
+                refreshTokenRepository
+                        .findByUserId(userId)
+                        .orElseThrow(() -> new DomainException(ErrorCode.INVALID_REFRESH_TOKEN));
+
+        if (!stored.equals(token)) {
+            throw new DomainException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        refreshTokenRepository.deleteByUserId(userId);
+
+        return issueTokens(userId);
+    }
+
+    private TokenResponse issueTokens(UUID userId) {
+        String accessToken = jwtTokenProvider.createAccessToken(userId);
+        String refreshToken = jwtTokenProvider.createRefreshToken(userId);
+
+        refreshTokenRepository.save(
+                userId, refreshToken, jwtTokenProvider.getRefreshTokenExpirationSeconds());
 
         return new TokenResponse(accessToken, refreshToken);
     }

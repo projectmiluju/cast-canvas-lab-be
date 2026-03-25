@@ -65,6 +65,19 @@ public class JwtTokenProvider {
         }
     }
 
+    public boolean isRefreshToken(String token) {
+        try {
+            Claims claims = parseClaims(token);
+            return "refresh".equals(claims.get("type", String.class));
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public long getRefreshTokenExpirationSeconds() {
+        return refreshTokenExpirationMillis / 1000;
+    }
+
     private String createToken(UUID userId, String type, long expirationMillis) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMillis);
@@ -72,6 +85,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .subject(userId.toString())
                 .issuer(issuer)
+                .id(UUID.randomUUID().toString())
                 .claim("type", type)
                 .issuedAt(now)
                 .expiration(expiry)
