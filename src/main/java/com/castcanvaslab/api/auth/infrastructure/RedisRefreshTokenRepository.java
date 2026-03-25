@@ -5,13 +5,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-@ConditionalOnBean(StringRedisTemplate.class)
+@Profile("!test")
 public class RedisRefreshTokenRepository implements RefreshTokenRepository {
 
     private static final String KEY_PREFIX = "refresh_token:";
